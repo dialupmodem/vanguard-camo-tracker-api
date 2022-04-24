@@ -43,23 +43,5 @@ namespace Vanguard.CamoTracker.API.Controllers
 
             return Ok(mappedWeapon);
         }
-
-        [HttpGet("FilterByCategory/{categoryId:int}", Name = nameof(FilterByCategory))]
-        public async Task<IActionResult> FilterByCategory(int categoryId)
-        {
-            var weapons = await _dbContext!.Weapons!
-                .Include(w => w.WeaponCategory)
-                .Include(w => w.Challenges)
-                .Where(w => w.WeaponCategoryId == categoryId)
-                .ToListAsync();
-
-            if (weapons == null)
-                return NotFound();
-
-            var mappedWeapons = _mapper.Map<List<WeaponDto>>(weapons);
-
-            return Ok(mappedWeapons);
-        }
-
     }
 }
